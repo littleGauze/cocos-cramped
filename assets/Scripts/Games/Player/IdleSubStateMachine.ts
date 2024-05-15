@@ -6,7 +6,7 @@ import { DIRECTION_ENUM } from '../../Enums'
 
 const BASE_URL = 'texture/player/idle'
 
-export default class PlayerIdleSubStateMachine extends DirectionSubStateMachine {
+export default class IdleSubStateMachine extends DirectionSubStateMachine {
   constructor(fsm: StateMachine) {
     super(fsm)
 

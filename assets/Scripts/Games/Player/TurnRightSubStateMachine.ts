@@ -3,9 +3,9 @@ import State from '../../Base/State'
 import StateMachine from '../../Base/StateMachine'
 import { DIRECTION_ENUM } from '../../Enums'
 
-const BASE_URL = 'texture/player/turnleft'
+const BASE_URL = 'texture/player/turnright'
 
-export default class PlayerTurnLeftSubStateMachine extends DirectionSubStateMachine {
+export default class TurnRightSubStateMachine extends DirectionSubStateMachine {
   constructor(fsm: StateMachine) {
     super(fsm)
 
