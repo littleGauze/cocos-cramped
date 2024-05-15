@@ -58,6 +58,7 @@ export default class PlayerManager extends EntityManager {
       this.x = this.targetX
       this.y = this.targetY
       this.isMoving = false
+      EventManager.instance.emit(EVENT_TYPE_ENUM.PLAYER_MOVE_END)
     }
   }
 

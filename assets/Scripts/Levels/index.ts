@@ -20,6 +20,7 @@ export type MapInfo = Array<Array<ITile>>
 export interface ILevel {
   mapInfo: MapInfo
   player: IEntity
+  enemies: IEntity[]
 }
 
 const Levels: Record<string, ILevel> = {

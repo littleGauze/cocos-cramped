@@ -1,3 +1,4 @@
+import EnemyManager from '../Base/EnemyManager'
 import EntityManager from '../Base/EntityManager'
 import Singleton from '../Base/Singleton'
 import DoorManager from '../Games/Door/DoorManager'
@@ -19,7 +20,7 @@ export default class DataManager extends Singleton {
   tileInfo: TileManager[][] = []
 
   player: PlayerManager = null
-  enemies: EntityManager[] = []
+  enemies: EnemyManager[] = []
   door: DoorManager = null
   bursts: EntityManager[] = []
 

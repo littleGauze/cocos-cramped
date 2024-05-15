@@ -432,9 +432,20 @@ const player: IEntity = {
   type: ENTITY_TYPE_ENUM.PLAYER,
 }
 
+const enemies: Array<IEntity> = [
+  {
+    x: 7,
+    y: 6,
+    direction: DIRECTION_ENUM.UP,
+    state: FSM_PARAM_TYPE_ENUM.IDLE,
+    type: ENTITY_TYPE_ENUM.SKELETON_WOODEN,
+  },
+]
+
 const level: ILevel = {
   mapInfo,
   player,
+  enemies,
 }
 
 export default level
