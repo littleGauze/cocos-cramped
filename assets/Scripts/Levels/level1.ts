@@ -1,5 +1,5 @@
-import { ILevel } from '.'
-import { TILE_TYPE_ENUM } from '../Enums'
+import { IEntity, ILevel } from '.'
+import { DIRECTION_ENUM, ENTITY_TYPE_ENUM, FSM_PARAM_TYPE_ENUM, TILE_TYPE_ENUM } from '../Enums'
 
 const mapInfo = [
   [
@@ -424,9 +424,17 @@ const mapInfo = [
   ],
 ]
 
+const player: IEntity = {
+  x: 2,
+  y: 8,
+  direction: DIRECTION_ENUM.UP,
+  state: FSM_PARAM_TYPE_ENUM.IDLE,
+  type: ENTITY_TYPE_ENUM.PLAYER,
+}
+
 const level: ILevel = {
-    mapInfo
+  mapInfo,
+  player,
 }
 
 export default level
-
