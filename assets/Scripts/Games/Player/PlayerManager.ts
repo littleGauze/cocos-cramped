@@ -30,10 +30,16 @@ export default class PlayerManager extends EntityManager {
     this.targetY = params.y
 
     EventManager.instance.on(EVENT_TYPE_ENUM.PLAYER_CTRL, this.inputProcess, this)
+    EventManager.instance.on(EVENT_TYPE_ENUM.PLAYER_DEATH, this.onPlayerDeath, this)
   }
 
   onDestroy() {
     EventManager.instance.off(EVENT_TYPE_ENUM.PLAYER_CTRL, this.inputProcess)
+    EventManager.instance.off(EVENT_TYPE_ENUM.PLAYER_DEATH, this.onPlayerDeath)
+  }
+
+  onPlayerDeath() {
+    this.state = FSM_PARAM_TYPE_ENUM.DEATH
   }
 
   update(dt: number) {

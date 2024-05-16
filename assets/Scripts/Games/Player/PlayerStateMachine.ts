@@ -6,6 +6,7 @@ import IdleSubStateMachine from './IdleSubStateMachine'
 import TurnLeftSubStateMachine from './TurnLeftSubStateMachine'
 import TurnRightSubStateMachine from './TurnRightSubStateMachine'
 import BlockSubStateMachine from './BlockSubStateMachine'
+import StatusSubStateMachine from './StatusSubStateMachine'
 
 const { ccclass } = _decorator
 
@@ -30,6 +31,7 @@ export default class PlayerStateMachine extends StateMachine {
     this.params.set(FSM_PARAM_TYPE_ENUM.BLOCKBACK, getInitTriggerParams())
     this.params.set(FSM_PARAM_TYPE_ENUM.BLOCKTURNLEFT, getInitTriggerParams())
     this.params.set(FSM_PARAM_TYPE_ENUM.BLOCKTURNRIGHT, getInitTriggerParams())
+    this.params.set(FSM_PARAM_TYPE_ENUM.DEATH, getInitTriggerParams())
   }
 
   initStateMachines() {
@@ -40,6 +42,7 @@ export default class PlayerStateMachine extends StateMachine {
     this.stateMachines.set(FSM_PARAM_TYPE_ENUM.BLOCKBACK, new BlockSubStateMachine(this, 'blockback'))
     this.stateMachines.set(FSM_PARAM_TYPE_ENUM.BLOCKTURNLEFT, new BlockSubStateMachine(this, 'blockturnleft'))
     this.stateMachines.set(FSM_PARAM_TYPE_ENUM.BLOCKTURNRIGHT, new BlockSubStateMachine(this, 'blockturnright'))
+    this.stateMachines.set(FSM_PARAM_TYPE_ENUM.DEATH, new StatusSubStateMachine(this, 'death'))
   }
 
   initAnimationEvent() {
@@ -61,6 +64,7 @@ export default class PlayerStateMachine extends StateMachine {
       case this.stateMachines.get(FSM_PARAM_TYPE_ENUM.BLOCKBACK):
       case this.stateMachines.get(FSM_PARAM_TYPE_ENUM.BLOCKTURNLEFT):
       case this.stateMachines.get(FSM_PARAM_TYPE_ENUM.BLOCKTURNRIGHT):
+      case this.stateMachines.get(FSM_PARAM_TYPE_ENUM.DEATH):
         if (this.params.get(FSM_PARAM_TYPE_ENUM.IDLE).value) {
           this.currentState = this.stateMachines.get(FSM_PARAM_TYPE_ENUM.IDLE)
         } else if (this.params.get(FSM_PARAM_TYPE_ENUM.TURN_LEFT).value) {
@@ -75,6 +79,8 @@ export default class PlayerStateMachine extends StateMachine {
           this.currentState = this.stateMachines.get(FSM_PARAM_TYPE_ENUM.BLOCKTURNLEFT)
         } else if (this.params.get(FSM_PARAM_TYPE_ENUM.BLOCKTURNRIGHT).value) {
           this.currentState = this.stateMachines.get(FSM_PARAM_TYPE_ENUM.BLOCKTURNRIGHT)
+        } else if (this.params.get(FSM_PARAM_TYPE_ENUM.DEATH).value) {
+          this.currentState = this.stateMachines.get(FSM_PARAM_TYPE_ENUM.DEATH)
         } else {
           this.currentState = this.currentState
         }

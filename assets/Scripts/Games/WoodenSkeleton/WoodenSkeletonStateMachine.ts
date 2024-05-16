@@ -30,6 +30,7 @@ export default class WoodenSkeletonStateMachine extends StateMachine {
       FSM_PARAM_TYPE_ENUM.IDLE,
       new WoodenSkeletonSubStateMachine(this, 'idle', AnimationClip.WrapMode.Loop),
     )
+    this.stateMachines.set(FSM_PARAM_TYPE_ENUM.ATTACK, new WoodenSkeletonSubStateMachine(this, 'attack'))
   }
 
   initAnimationEvent() {
@@ -45,8 +46,11 @@ export default class WoodenSkeletonStateMachine extends StateMachine {
   run(): void {
     switch (this.currentState) {
       case this.stateMachines.get(FSM_PARAM_TYPE_ENUM.IDLE):
+      case this.stateMachines.get(FSM_PARAM_TYPE_ENUM.ATTACK):
         if (this.params.get(FSM_PARAM_TYPE_ENUM.IDLE).value) {
           this.currentState = this.stateMachines.get(FSM_PARAM_TYPE_ENUM.IDLE)
+        } else if (this.params.get(FSM_PARAM_TYPE_ENUM.ATTACK).value) {
+          this.currentState = this.stateMachines.get(FSM_PARAM_TYPE_ENUM.ATTACK)
         } else {
           this.currentState = this.currentState
         }
