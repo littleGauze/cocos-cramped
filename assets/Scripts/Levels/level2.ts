@@ -189,12 +189,32 @@ const player: IEntity = {
   y: 3,
   direction: DIRECTION_ENUM.LEFT,
   state: FSM_PARAM_TYPE_ENUM.IDLE,
+  type: ENTITY_TYPE_ENUM.PLAYER,
+}
+
+const door: IEntity = {
+  x: 5,
+  y: 3,
+  direction: DIRECTION_ENUM.DOWN,
+  state: FSM_PARAM_TYPE_ENUM.IDLE,
   type: ENTITY_TYPE_ENUM.DOOR,
 }
+
+const enemies: IEntity[] = [
+  {
+    x: 5,
+    y: 3,
+    direction: DIRECTION_ENUM.DOWN,
+    state: FSM_PARAM_TYPE_ENUM.IDLE,
+    type: ENTITY_TYPE_ENUM.DOOR,
+  },
+]
 
 const level: ILevel = {
   mapInfo,
   player,
+  enemies,
+  door,
 }
 
 export default level

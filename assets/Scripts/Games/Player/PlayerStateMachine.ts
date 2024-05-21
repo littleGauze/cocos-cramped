@@ -7,6 +7,7 @@ import TurnLeftSubStateMachine from './TurnLeftSubStateMachine'
 import TurnRightSubStateMachine from './TurnRightSubStateMachine'
 import BlockSubStateMachine from './BlockSubStateMachine'
 import StatusSubStateMachine from './StatusSubStateMachine'
+import DataManager from '../../Runtimes/DataManager'
 
 const { ccclass } = _decorator
 
@@ -32,6 +33,8 @@ export default class PlayerStateMachine extends StateMachine {
     this.params.set(FSM_PARAM_TYPE_ENUM.BLOCKTURNLEFT, getInitTriggerParams())
     this.params.set(FSM_PARAM_TYPE_ENUM.BLOCKTURNRIGHT, getInitTriggerParams())
     this.params.set(FSM_PARAM_TYPE_ENUM.DEATH, getInitTriggerParams())
+    this.params.set(FSM_PARAM_TYPE_ENUM.AIRDEATH, getInitTriggerParams())
+    this.params.set(FSM_PARAM_TYPE_ENUM.ATTACK, getInitTriggerParams())
   }
 
   initStateMachines() {
@@ -43,13 +46,15 @@ export default class PlayerStateMachine extends StateMachine {
     this.stateMachines.set(FSM_PARAM_TYPE_ENUM.BLOCKTURNLEFT, new BlockSubStateMachine(this, 'blockturnleft'))
     this.stateMachines.set(FSM_PARAM_TYPE_ENUM.BLOCKTURNRIGHT, new BlockSubStateMachine(this, 'blockturnright'))
     this.stateMachines.set(FSM_PARAM_TYPE_ENUM.DEATH, new StatusSubStateMachine(this, 'death'))
+    this.stateMachines.set(FSM_PARAM_TYPE_ENUM.AIRDEATH, new StatusSubStateMachine(this, 'airdeath'))
+    this.stateMachines.set(FSM_PARAM_TYPE_ENUM.ATTACK, new StatusSubStateMachine(this, 'attack'))
   }
 
   initAnimationEvent() {
     this.animationComponent.on(Animation.EventType.FINISHED, () => {
       const whilelist = ['block', 'turn', 'attack']
       const name = this.animationComponent.defaultClip.name
-      if (whilelist.includes(name)) {
+      if (whilelist.some(v => name.includes(v))) {
         this.node.getComponent(EntityManager).state = FSM_PARAM_TYPE_ENUM.IDLE
       }
     })
@@ -65,6 +70,8 @@ export default class PlayerStateMachine extends StateMachine {
       case this.stateMachines.get(FSM_PARAM_TYPE_ENUM.BLOCKTURNLEFT):
       case this.stateMachines.get(FSM_PARAM_TYPE_ENUM.BLOCKTURNRIGHT):
       case this.stateMachines.get(FSM_PARAM_TYPE_ENUM.DEATH):
+      case this.stateMachines.get(FSM_PARAM_TYPE_ENUM.AIRDEATH):
+      case this.stateMachines.get(FSM_PARAM_TYPE_ENUM.ATTACK):
         if (this.params.get(FSM_PARAM_TYPE_ENUM.IDLE).value) {
           this.currentState = this.stateMachines.get(FSM_PARAM_TYPE_ENUM.IDLE)
         } else if (this.params.get(FSM_PARAM_TYPE_ENUM.TURN_LEFT).value) {
@@ -81,6 +88,10 @@ export default class PlayerStateMachine extends StateMachine {
           this.currentState = this.stateMachines.get(FSM_PARAM_TYPE_ENUM.BLOCKTURNRIGHT)
         } else if (this.params.get(FSM_PARAM_TYPE_ENUM.DEATH).value) {
           this.currentState = this.stateMachines.get(FSM_PARAM_TYPE_ENUM.DEATH)
+        } else if (this.params.get(FSM_PARAM_TYPE_ENUM.AIRDEATH).value) {
+          this.currentState = this.stateMachines.get(FSM_PARAM_TYPE_ENUM.AIRDEATH)
+        } else if (this.params.get(FSM_PARAM_TYPE_ENUM.ATTACK).value) {
+          this.currentState = this.stateMachines.get(FSM_PARAM_TYPE_ENUM.ATTACK)
         } else {
           this.currentState = this.currentState
         }

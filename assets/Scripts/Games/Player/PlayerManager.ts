@@ -31,15 +31,21 @@ export default class PlayerManager extends EntityManager {
 
     EventManager.instance.on(EVENT_TYPE_ENUM.PLAYER_CTRL, this.inputProcess, this)
     EventManager.instance.on(EVENT_TYPE_ENUM.PLAYER_DEATH, this.onPlayerDeath, this)
+    EventManager.instance.on(EVENT_TYPE_ENUM.PLAYER_AIRDEATH, this.onPlayerAirDeath, this)
   }
 
   onDestroy() {
     EventManager.instance.off(EVENT_TYPE_ENUM.PLAYER_CTRL, this.inputProcess)
     EventManager.instance.off(EVENT_TYPE_ENUM.PLAYER_DEATH, this.onPlayerDeath)
+    EventManager.instance.off(EVENT_TYPE_ENUM.PLAYER_AIRDEATH, this.onPlayerAirDeath)
   }
 
   onPlayerDeath() {
     this.state = FSM_PARAM_TYPE_ENUM.DEATH
+  }
+
+  onPlayerAirDeath() {
+    this.state = FSM_PARAM_TYPE_ENUM.AIRDEATH
   }
 
   update(dt: number) {
@@ -78,6 +84,13 @@ export default class PlayerManager extends EntityManager {
     ) {
       return
     }
+
+    let id = ''
+    if ((id = this.willAttack(type))) {
+      EventManager.instance.emit(EVENT_TYPE_ENUM.PLAYER_ATTACK, id)
+      return
+    }
+
     if (this.willBlock(type)) {
       return
     }
@@ -113,6 +126,7 @@ export default class PlayerManager extends EntityManager {
           this.direction = DIRECTION_ENUM.UP
         }
         this.state = FSM_PARAM_TYPE_ENUM.TURN_LEFT
+        EventManager.instance.emit(EVENT_TYPE_ENUM.PLAYER_MOVE_END)
         break
       case PLAYER_ACTION_ENUM.TURN_RIGHT:
         if (this.direction === DIRECTION_ENUM.UP) {
@@ -125,10 +139,52 @@ export default class PlayerManager extends EntityManager {
           this.direction = DIRECTION_ENUM.DOWN
         }
         this.state = FSM_PARAM_TYPE_ENUM.TURN_RIGHT
+        EventManager.instance.emit(EVENT_TYPE_ENUM.PLAYER_MOVE_END)
         break
       default:
         break
     }
+  }
+
+  willAttack(type: PLAYER_ACTION_ENUM): string {
+    const enemies = DataManager.instance.enemies
+    for (const enemy of enemies) {
+      if (enemy.state === FSM_PARAM_TYPE_ENUM.DEATH) continue
+      if (
+        type === PLAYER_ACTION_ENUM.MOVE_UP &&
+        this.direction === DIRECTION_ENUM.UP &&
+        this.targetX === enemy.x &&
+        enemy.y === this.targetY - 2
+      ) {
+        this.state = FSM_PARAM_TYPE_ENUM.ATTACK
+        return enemy.id
+      } else if (
+        type === PLAYER_ACTION_ENUM.MOVE_LEFT &&
+        this.direction === DIRECTION_ENUM.LEFT &&
+        this.targetX - 2 === enemy.x &&
+        enemy.y === this.targetY
+      ) {
+        this.state = FSM_PARAM_TYPE_ENUM.ATTACK
+        return enemy.id
+      } else if (
+        type === PLAYER_ACTION_ENUM.MOVE_DOWN &&
+        this.direction === DIRECTION_ENUM.DOWN &&
+        this.targetX === enemy.x &&
+        enemy.y === this.targetY + 2
+      ) {
+        this.state = FSM_PARAM_TYPE_ENUM.ATTACK
+        return enemy.id
+      } else if (
+        type === PLAYER_ACTION_ENUM.MOVE_RIGHT &&
+        this.direction === DIRECTION_ENUM.RIGHT &&
+        this.targetX + 2 === enemy.x &&
+        enemy.y === this.targetY
+      ) {
+        this.state = FSM_PARAM_TYPE_ENUM.ATTACK
+        return enemy.id
+      }
+    }
+    return ''
   }
 
   willBlock(type: PLAYER_ACTION_ENUM) {

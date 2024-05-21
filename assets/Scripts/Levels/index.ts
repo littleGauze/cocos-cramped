@@ -21,6 +21,8 @@ export interface ILevel {
   mapInfo: MapInfo
   player: IEntity
   enemies: IEntity[]
+  door: IEntity
+  bursts?: IEntity[]
 }
 
 const Levels: Record<string, ILevel> = {

@@ -8,6 +8,9 @@ import PlayerManager from '../Player/PlayerManager'
 import { ENTITY_TYPE_ENUM, EVENT_TYPE_ENUM } from '../../Enums'
 import WoodenSkeletonManager from '../WoodenSkeleton/WoodenSkeletonManager'
 import EventManager from '../../Runtimes/EventManger'
+import DoorManager from '../Door/DoorManager'
+import IronSkeletonManager from '../IronSkeleton/IronSkeletonManager'
+import BurstManager from '../Burst/BurstManager'
 const { ccclass } = _decorator
 
 @ccclass('BattleManager')
@@ -36,7 +39,7 @@ export class BattleManager extends Component {
       DataManager.instance.mapRowCount = level.mapInfo.length || 0
       DataManager.instance.mapColumnCount = level.mapInfo[0]?.length || 0
 
-      await Promise.all([this.generateTileMap(), this.generateEnimies()])
+      await Promise.all([this.generateTileMap(), this.generateEnimies(), this.generateDoor(), this.generateBursts()])
 
       await this.generatePlayer()
     }
@@ -80,12 +83,36 @@ export class BattleManager extends Component {
       const enemy = this.level.enemies[i]
       const node = createUINode()
       node.setParent(this.stage)
-      const Manager = enemy.type === ENTITY_TYPE_ENUM.SKELETON_WOODEN ? WoodenSkeletonManager : WoodenSkeletonManager
+      const Manager = enemy.type === ENTITY_TYPE_ENUM.SKELETON_WOODEN ? WoodenSkeletonManager : IronSkeletonManager
       const enemyManager = node.addComponent(Manager)
       await enemyManager.init(enemy)
       DataManager.instance.enemies.push(enemyManager)
     }
 
     await Promise.all(promises)
+  }
+
+  async generateBursts() {
+    DataManager.instance.bursts = []
+    const promises = []
+
+    for (let i = 0; i < this.level.bursts.length; i++) {
+      const burst = this.level.bursts[i]
+      const node = createUINode()
+      node.setParent(this.stage)
+      const burstManager = node.addComponent(BurstManager)
+      await burstManager.init(burst)
+      DataManager.instance.bursts.push(burstManager)
+    }
+
+    await Promise.all(promises)
+  }
+
+  async generateDoor() {
+    const node = createUINode()
+    node.setParent(this.stage)
+    const doorManager = node.addComponent(DoorManager)
+    await doorManager.init(this.level.door)
+    DataManager.instance.door = doorManager
   }
 }

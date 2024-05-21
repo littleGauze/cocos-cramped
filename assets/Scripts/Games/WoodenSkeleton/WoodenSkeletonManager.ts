@@ -17,13 +17,18 @@ export default class WoodenSkeletonManager extends EnemyManager {
     super.init(params)
 
     EventManager.instance.on(EVENT_TYPE_ENUM.PLAYER_MOVE_END, this.onAttack, this)
+    EventManager.instance.on(EVENT_TYPE_ENUM.PLAYER_ATTACK, this.onDeath, this)
   }
 
   onDestroy() {
+    super.onDestroy()
     EventManager.instance.off(EVENT_TYPE_ENUM.PLAYER_MOVE_END, this.onAttack)
+    EventManager.instance.off(EVENT_TYPE_ENUM.PLAYER_ATTACK, this.onDeath)
   }
 
   onAttack() {
+    if (this.isDead) return
+
     const { x: pX, y: pY, state } = DataManager.instance.player
 
     if ((pX === this.x && Math.abs(pY - this.y) <= 1) || (pY === this.y && Math.abs(pX - this.x) <= 1)) {

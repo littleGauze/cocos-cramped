@@ -1,5 +1,5 @@
 import { _decorator } from 'cc'
-import { DIRECTION_ENUM, EVENT_TYPE_ENUM } from '../Enums'
+import { DIRECTION_ENUM, EVENT_TYPE_ENUM, FSM_PARAM_TYPE_ENUM } from '../Enums'
 import { IEntity } from '../Levels'
 import DataManager from '../Runtimes/DataManager'
 import EventManager from '../Runtimes/EventManger'
@@ -9,6 +9,10 @@ const { ccclass } = _decorator
 
 @ccclass('EnemyManager')
 export default class EnemyManager extends EntityManager {
+  get isDead() {
+    return this.state === FSM_PARAM_TYPE_ENUM.DEATH
+  }
+
   init(params: IEntity) {
     super.init(params)
 
@@ -24,6 +28,7 @@ export default class EnemyManager extends EntityManager {
   }
 
   onChangeDirection(init = false) {
+    if (this.isDead) return
     const { x: pX, y: pY } = DataManager.instance.player
     const disX = Math.abs(pX - this.x)
     const disY = Math.abs(pY - this.y)
@@ -39,5 +44,10 @@ export default class EnemyManager extends EntityManager {
     } else if (pX >= this.x && pY >= this.y) {
       this.direction = disX >= disY ? DIRECTION_ENUM.RIGHT : DIRECTION_ENUM.DOWN
     }
+  }
+
+  onDeath(id: string) {
+    if (this.isDead || this.id !== id || !DataManager.instance.player) return
+    this.state = FSM_PARAM_TYPE_ENUM.DEATH
   }
 }

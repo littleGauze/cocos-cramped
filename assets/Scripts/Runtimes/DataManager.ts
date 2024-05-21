@@ -1,6 +1,7 @@
 import EnemyManager from '../Base/EnemyManager'
 import EntityManager from '../Base/EntityManager'
 import Singleton from '../Base/Singleton'
+import BurstManager from '../Games/Burst/BurstManager'
 import DoorManager from '../Games/Door/DoorManager'
 import PlayerManager from '../Games/Player/PlayerManager'
 import { TileManager } from '../Games/Tile/TileManager'
@@ -22,7 +23,7 @@ export default class DataManager extends Singleton {
   player: PlayerManager = null
   enemies: EnemyManager[] = []
   door: DoorManager = null
-  bursts: EntityManager[] = []
+  bursts: BurstManager[] = []
 
   reset() {
     this.mapInfo = []

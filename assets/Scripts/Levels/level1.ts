@@ -112,8 +112,8 @@ const mapInfo = [
       type: TILE_TYPE_ENUM.FLOOR,
     },
     {
-      src: 1,
-      type: TILE_TYPE_ENUM.FLOOR,
+      src: null,
+      type: null,
     },
     {
       src: 1,
@@ -434,11 +434,36 @@ const player: IEntity = {
 
 const enemies: Array<IEntity> = [
   {
-    x: 7,
-    y: 6,
+    x: 2,
+    y: 4,
     direction: DIRECTION_ENUM.UP,
     state: FSM_PARAM_TYPE_ENUM.IDLE,
     type: ENTITY_TYPE_ENUM.SKELETON_WOODEN,
+  },
+  {
+    x: 1,
+    y: 5,
+    direction: DIRECTION_ENUM.UP,
+    state: FSM_PARAM_TYPE_ENUM.IDLE,
+    type: ENTITY_TYPE_ENUM.SKELETON_IRON,
+  },
+]
+
+const door: IEntity = {
+  x: 7,
+  y: 8,
+  direction: DIRECTION_ENUM.DOWN,
+  state: FSM_PARAM_TYPE_ENUM.IDLE,
+  type: ENTITY_TYPE_ENUM.DOOR,
+}
+
+const bursts: IEntity[] = [
+  {
+    x: 2,
+    y: 6,
+    direction: DIRECTION_ENUM.DOWN,
+    state: FSM_PARAM_TYPE_ENUM.IDLE,
+    type: ENTITY_TYPE_ENUM.BURST,
   },
 ]
 
@@ -446,6 +471,8 @@ const level: ILevel = {
   mapInfo,
   player,
   enemies,
+  door,
+  bursts,
 }
 
 export default level
