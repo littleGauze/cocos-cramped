@@ -67,3 +67,12 @@ export enum ENTITY_TYPE_ENUM {
   SKELETON_IRON = 'SKELETON_IRON',
   BURST = 'BURST',
 }
+
+export enum SPIKES_TYPE_ENUM {
+  SPIKES_0 = 0,
+  SPIKES_1 = 2,
+  SPIKES_2,
+  SPIKES_3,
+  SPIKES_4,
+  SPIKES_5,
+}

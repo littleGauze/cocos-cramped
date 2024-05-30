@@ -11,6 +11,7 @@ import EventManager from '../../Runtimes/EventManger'
 import DoorManager from '../Door/DoorManager'
 import IronSkeletonManager from '../IronSkeleton/IronSkeletonManager'
 import BurstManager from '../Burst/BurstManager'
+import SpikesManager from '../Spikes/SpikesManager'
 const { ccclass } = _decorator
 
 @ccclass('BattleManager')
@@ -39,7 +40,13 @@ export class BattleManager extends Component {
       DataManager.instance.mapRowCount = level.mapInfo.length || 0
       DataManager.instance.mapColumnCount = level.mapInfo[0]?.length || 0
 
-      await Promise.all([this.generateTileMap(), this.generateEnimies(), this.generateDoor(), this.generateBursts()])
+      await Promise.all([
+        this.generateTileMap(),
+        this.generateEnimies(),
+        this.generateDoor(),
+        this.generateBursts(),
+        this.generateSpikes(),
+      ])
 
       await this.generatePlayer()
     }
@@ -103,6 +110,22 @@ export class BattleManager extends Component {
       const burstManager = node.addComponent(BurstManager)
       await burstManager.init(burst)
       DataManager.instance.bursts.push(burstManager)
+    }
+
+    await Promise.all(promises)
+  }
+
+  async generateSpikes() {
+    DataManager.instance.spikes = []
+    const promises = []
+
+    for (let i = 0; i < this.level.spikes.length; i++) {
+      const spike = this.level.spikes[i]
+      const node = createUINode()
+      node.setParent(this.stage)
+      const spikeManager = node.addComponent(SpikesManager)
+      await spikeManager.init(spike)
+      DataManager.instance.spikes.push(spikeManager)
     }
 
     await Promise.all(promises)
