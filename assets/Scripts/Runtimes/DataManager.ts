@@ -1,9 +1,9 @@
 import EnemyManager from '../Base/EnemyManager'
-import EntityManager from '../Base/EntityManager'
 import Singleton from '../Base/Singleton'
 import BurstManager from '../Games/Burst/BurstManager'
 import DoorManager from '../Games/Door/DoorManager'
 import PlayerManager from '../Games/Player/PlayerManager'
+import SmokeManager from '../Games/Smokes/SmokeManager'
 import SpikesManager from '../Games/Spikes/SpikesManager'
 import { TileManager } from '../Games/Tile/TileManager'
 import { MapInfo } from '../Levels'
@@ -26,13 +26,10 @@ export default class DataManager extends Singleton {
   door: DoorManager = null
   bursts: BurstManager[] = []
   spikes: SpikesManager[] = []
+  smokes: SmokeManager[] = []
 
   reset() {
     this.mapInfo = []
     this.tileInfo = []
-  }
-
-  next() {
-    this.levelIndex++
   }
 }

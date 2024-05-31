@@ -32,8 +32,8 @@ export interface ILevel {
   player: IEntity
   enemies: IEntity[]
   door: IEntity
-  bursts?: IEntity[]
-  spikes?: ISpikes[]
+  bursts: IEntity[]
+  spikes: ISpikes[]
 }
 
 const Levels: Record<string, ILevel> = {

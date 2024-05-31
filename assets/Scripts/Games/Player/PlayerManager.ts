@@ -102,18 +102,22 @@ export default class PlayerManager extends EntityManager {
       case PLAYER_ACTION_ENUM.MOVE_LEFT:
         this.targetX -= 1
         this.isMoving = true
+        this.showSmoke(DIRECTION_ENUM.LEFT)
         break
       case PLAYER_ACTION_ENUM.MOVE_RIGHT:
         this.targetX += 1
         this.isMoving = true
+        this.showSmoke(DIRECTION_ENUM.RIGHT)
         break
       case PLAYER_ACTION_ENUM.MOVE_UP:
         this.targetY -= 1
         this.isMoving = true
+        this.showSmoke(DIRECTION_ENUM.UP)
         break
       case PLAYER_ACTION_ENUM.MOVE_DOWN:
         this.targetY += 1
         this.isMoving = true
+        this.showSmoke(DIRECTION_ENUM.DOWN)
         break
       case PLAYER_ACTION_ENUM.TURN_LEFT:
         if (this.direction === DIRECTION_ENUM.UP) {
@@ -144,6 +148,10 @@ export default class PlayerManager extends EntityManager {
       default:
         break
     }
+  }
+
+  showSmoke(type: DIRECTION_ENUM) {
+    EventManager.instance.emit(EVENT_TYPE_ENUM.SHOW_SOMKE, this.x, this.y, type)
   }
 
   willAttack(type: PLAYER_ACTION_ENUM): string {

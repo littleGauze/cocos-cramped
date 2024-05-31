@@ -2,6 +2,7 @@ import { _decorator, Animation, AnimationClip } from 'cc'
 import StateMachine, { getInitNumberParams } from '../../Base/StateMachine'
 import { FSM_PARAM_TYPE_ENUM, SPIKES_TYPE_ENUM } from '../../Enums'
 import SpikesSubStateMachine from './SpikesSubStateMachine'
+import SpikesManager from './SpikesManager'
 
 const { ccclass } = _decorator
 
@@ -23,35 +24,26 @@ export default class SpikesStateMachine extends StateMachine {
   }
 
   initStateMachines() {
-    this.stateMachines.set(
-      SPIKES_TYPE_ENUM[SPIKES_TYPE_ENUM.SPIKES_1],
-      new SpikesSubStateMachine(this, 'spikesone', AnimationClip.WrapMode.Loop),
-    )
-    this.stateMachines.set(
-      SPIKES_TYPE_ENUM[SPIKES_TYPE_ENUM.SPIKES_2],
-      new SpikesSubStateMachine(this, 'spikestwo', AnimationClip.WrapMode.Loop),
-    )
-    this.stateMachines.set(
-      SPIKES_TYPE_ENUM[SPIKES_TYPE_ENUM.SPIKES_3],
-      new SpikesSubStateMachine(this, 'spikesthree', AnimationClip.WrapMode.Loop),
-    )
-    this.stateMachines.set(
-      SPIKES_TYPE_ENUM[SPIKES_TYPE_ENUM.SPIKES_4],
-      new SpikesSubStateMachine(this, 'spikesfour', AnimationClip.WrapMode.Loop),
-    )
+    this.stateMachines.set(SPIKES_TYPE_ENUM[SPIKES_TYPE_ENUM.SPIKES_1], new SpikesSubStateMachine(this, 'spikesone'))
+    this.stateMachines.set(SPIKES_TYPE_ENUM[SPIKES_TYPE_ENUM.SPIKES_2], new SpikesSubStateMachine(this, 'spikestwo'))
+    this.stateMachines.set(SPIKES_TYPE_ENUM[SPIKES_TYPE_ENUM.SPIKES_3], new SpikesSubStateMachine(this, 'spikesthree'))
+    this.stateMachines.set(SPIKES_TYPE_ENUM[SPIKES_TYPE_ENUM.SPIKES_4], new SpikesSubStateMachine(this, 'spikesfour'))
   }
 
   initAnimationEvent() {
-    // this.animationComponent.on(Animation.EventType.FINISHED, () => {
-    //   const whilelist = ['attack']
-    //   const name = this.animationComponent.defaultClip.name
-    //   if (whilelist.some(v => name.includes(v))) {
-    //     this.node.getComponent(EntityManager).state = FSM_PARAM_TYPE_ENUM.IDLE
-    //   }
-    //   if (name.includes('death')) {
-    //     EventManager.instance.emit(EVENT_TYPE_ENUM.CHECK_DOOR_OPEN)
-    //   }
-    // })
+    this.animationComponent.on(Animation.EventType.FINISHED, () => {
+      const name = this.animationComponent.defaultClip?.name
+      const value = this.params.get(FSM_PARAM_TYPE_ENUM.SPIKES_TOTAL_COUNT).value
+      const spikesManager = this.getComponent(SpikesManager)
+      if (
+        (value === SPIKES_TYPE_ENUM.SPIKES_1 && name.includes('spikesone/two')) ||
+        (value === SPIKES_TYPE_ENUM.SPIKES_2 && name.includes('spikestwo/three')) ||
+        (value === SPIKES_TYPE_ENUM.SPIKES_3 && name.includes('spikesthree/four')) ||
+        (value === SPIKES_TYPE_ENUM.SPIKES_4 && name.includes('spikesfour/five'))
+      ) {
+        spikesManager.reset()
+      }
+    })
   }
 
   run(): void {

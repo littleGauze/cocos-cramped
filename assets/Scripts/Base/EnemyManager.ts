@@ -21,8 +21,6 @@ export default class EnemyManager extends EntityManager {
   }
 
   onDestroy() {
-    super.onDestroy()
-
     EventManager.instance.off(EVENT_TYPE_ENUM.PLAYER_BORN, this.onChangeDirection)
     EventManager.instance.off(EVENT_TYPE_ENUM.PLAYER_MOVE_END, this.onChangeDirection)
   }

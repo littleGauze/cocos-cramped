@@ -1,10 +1,12 @@
 import { Component, Sprite, UITransform, _decorator } from 'cc'
 import { randomByLength } from '../../Utils'
 import StateMachine from '../../Base/StateMachine'
-import { FSM_PARAM_TYPE_ENUM, SPIKES_TYPE_ENUM } from '../../Enums'
+import { EVENT_TYPE_ENUM, FSM_PARAM_TYPE_ENUM, SPIKES_TYPE_ENUM } from '../../Enums'
 import { ISpikes } from '../../Levels'
 import { TILE_WIDTH, TILE_HEIGHT } from '../Tile/TileManager'
 import SpikesStateMachine from './SpikesStateMachine'
+import EventManager from '../../Runtimes/EventManger'
+import DataManager from '../../Runtimes/DataManager'
 
 const { ccclass } = _decorator
 
@@ -63,6 +65,29 @@ export default class SpikesManager extends Component {
     this.type = params.type
     this.count = params.count
     this.totalCount = SPIKES_TYPE_ENUM[SPIKES_TYPE_ENUM[this.type]]
+
+    EventManager.instance.on(EVENT_TYPE_ENUM.PLAYER_MOVE_END, this.loop, this)
+  }
+
+  onDestroy(): void {
+    EventManager.instance.off(EVENT_TYPE_ENUM.PLAYER_MOVE_END, this.loop)
+  }
+
+  loop() {
+    const { x, y } = DataManager.instance.player
+    if (this.count < this.totalCount) {
+      this.count++
+    }
+
+    if (this.count === this.totalCount && this.x === x && this.y === y) {
+      EventManager.instance.emit(EVENT_TYPE_ENUM.PLAYER_DEATH)
+    }
+  }
+
+  onAttack() {}
+
+  reset() {
+    this.count = 0
   }
 
   update(dt: number) {

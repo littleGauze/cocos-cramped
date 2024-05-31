@@ -1,5 +1,12 @@
-import { IEntity, ILevel } from '.'
-import { DIRECTION_ENUM, ENTITY_TYPE_ENUM, FSM_PARAM_TYPE_ENUM, TILE_TYPE_ENUM } from '../Enums'
+import { IEntity, ILevel, ISpikes, SPIKES_NUMBER_TYPE } from '.'
+import {
+  DIRECTION_ENUM,
+  ENTITY_TYPE_ENUM,
+  FSM_PARAM_TYPE_ENUM,
+  SPIKES_LOOP_NUMBER_ENUM,
+  SPIKES_TYPE_ENUM,
+  TILE_TYPE_ENUM,
+} from '../Enums'
 
 const mapInfo = [
   [
@@ -185,9 +192,9 @@ const mapInfo = [
 ]
 
 const player: IEntity = {
-  x: 5,
-  y: 3,
-  direction: DIRECTION_ENUM.LEFT,
+  x: 2,
+  y: 0,
+  direction: DIRECTION_ENUM.DOWN,
   state: FSM_PARAM_TYPE_ENUM.IDLE,
   type: ENTITY_TYPE_ENUM.PLAYER,
 }
@@ -195,26 +202,47 @@ const player: IEntity = {
 const door: IEntity = {
   x: 5,
   y: 3,
-  direction: DIRECTION_ENUM.DOWN,
+  direction: DIRECTION_ENUM.LEFT,
   state: FSM_PARAM_TYPE_ENUM.IDLE,
   type: ENTITY_TYPE_ENUM.DOOR,
 }
 
 const enemies: IEntity[] = [
   {
-    x: 5,
-    y: 3,
-    direction: DIRECTION_ENUM.DOWN,
+    x: 3,
+    y: 2,
+    direction: DIRECTION_ENUM.UP,
     state: FSM_PARAM_TYPE_ENUM.IDLE,
-    type: ENTITY_TYPE_ENUM.DOOR,
+    type: ENTITY_TYPE_ENUM.SKELETON_WOODEN,
+  },
+  {
+    x: 4,
+    y: 3,
+    direction: DIRECTION_ENUM.UP,
+    state: FSM_PARAM_TYPE_ENUM.IDLE,
+    type: ENTITY_TYPE_ENUM.SKELETON_WOODEN,
   },
 ]
+
+const spikes: ISpikes[] = [
+  {
+    x: 2,
+    y: 2,
+    type: SPIKES_TYPE_ENUM.SPIKES_1,
+    count: SPIKES_LOOP_NUMBER_ENUM.SPIKES_LOOP_0,
+    total: SPIKES_TYPE_ENUM[SPIKES_TYPE_ENUM.SPIKES_1] as SPIKES_NUMBER_TYPE,
+  },
+]
+
+const bursts: IEntity[] = []
 
 const level: ILevel = {
   mapInfo,
   player,
   enemies,
   door,
+  spikes,
+  bursts,
 }
 
 export default level

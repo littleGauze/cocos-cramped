@@ -3,14 +3,16 @@ import StateMachine from './StateMachine'
 import { sortSpriteFrames } from '../Utils'
 import ResourceManger from '../Runtimes/ResourceManager'
 
+export const ANIMATION_SPEED = 1 / 10
+
 export default class State {
   animationClip: AnimationClip = null
-  private speed = 1 / 10
 
   constructor(
     private fsm: StateMachine,
     private path: string,
     private mode: AnimationClip.WrapMode = AnimationClip.WrapMode.Normal,
+    private speed: number = ANIMATION_SPEED,
   ) {
     this.init()
   }
@@ -35,11 +37,7 @@ export default class State {
   }
 
   run() {
-    if (
-      this.fsm.animationComponent.defaultClip?.name === this.animationClip.name &&
-      this.mode === AnimationClip.WrapMode.Loop
-    )
-      return
+    if (this.fsm.animationComponent.defaultClip?.name === this.animationClip.name) return
     if (this.fsm.animationComponent) {
       this.fsm.animationComponent.defaultClip = this.animationClip
       this.fsm.animationComponent.play()

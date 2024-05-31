@@ -97,7 +97,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 320,
-      "y": 480.00000000000006,
+      "y": 479.99999999999994,
       "z": 0
     },
     "_lrot": {
@@ -182,7 +182,7 @@
     "_priority": 0,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 480,
+    "_orthoHeight": 479.99999999999994,
     "_near": 0,
     "_far": 1000,
     "_color": {
@@ -278,7 +278,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 640,
-      "height": 960
+      "height": 959.9999999999998
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -381,7 +381,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -439.8,
+      "y": -439.7999999999999,
       "z": 0
     },
     "_lrot": {
@@ -419,8 +419,8 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 301.0979030932887,
-      "height": 50.4
+      "width": 301.03189506880733,
+      "height": 50.400000000000006
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -452,7 +452,7 @@
     "_string": "Cramped Room of Death Demo ",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 22.583333333333332,
+    "_actualFontSize": 22.708333333333336,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -506,7 +506,7 @@
     "_left": 0,
     "_right": 0,
     "_top": 0,
-    "_bottom": 15,
+    "_bottom": 14.999999999999996,
     "_horizontalCenter": 0,
     "_verticalCenter": 0,
     "_isAbsLeft": true,
@@ -568,7 +568,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -300,
+      "y": -299.9999999999999,
       "z": 0
     },
     "_lrot": {
@@ -1759,7 +1759,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 640,
-      "height": 960
+      "height": 959.9999999999998
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",

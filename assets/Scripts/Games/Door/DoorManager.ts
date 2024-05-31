@@ -20,7 +20,6 @@ export default class DoorManager extends EntityManager {
   }
 
   onDestroy() {
-    super.onDestroy()
     EventManager.instance.off(EVENT_TYPE_ENUM.CHECK_DOOR_OPEN, this.checkOpen)
   }
 
