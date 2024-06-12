@@ -7,6 +7,7 @@ import { TILE_WIDTH, TILE_HEIGHT } from '../Tile/TileManager'
 import SpikesStateMachine from './SpikesStateMachine'
 import EventManager from '../../Runtimes/EventManger'
 import DataManager from '../../Runtimes/DataManager'
+import { SHAKE_DIRECTION } from '../../UI/ShakeManger'
 
 const { ccclass } = _decorator
 
@@ -81,6 +82,7 @@ export default class SpikesManager extends Component {
 
     if (this.count === this.totalCount && this.x === x && this.y === y) {
       EventManager.instance.emit(EVENT_TYPE_ENUM.PLAYER_DEATH)
+      EventManager.instance.emit(EVENT_TYPE_ENUM.SHAKE, SHAKE_DIRECTION.DOWN)
     }
   }
 

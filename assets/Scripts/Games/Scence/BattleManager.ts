@@ -13,6 +13,8 @@ import IronSkeletonManager from '../IronSkeleton/IronSkeletonManager'
 import BurstManager from '../Burst/BurstManager'
 import SpikesManager from '../Spikes/SpikesManager'
 import SmokeManager from '../Smokes/SmokeManager'
+import FaderManger from '../../Base/FaderManager'
+import ShakeManager from '../../UI/ShakeManger'
 const { ccclass } = _decorator
 
 @ccclass('BattleManager')
@@ -22,7 +24,7 @@ export class BattleManager extends Component {
   smokeLayer: Node = null
 
   start() {
-    this.generateState()
+    this.generateStage()
     this.initLevel()
 
     EventManager.instance.on(EVENT_TYPE_ENUM.PLAYER_MOVE_END, this.checkWin, this)
@@ -36,9 +38,10 @@ export class BattleManager extends Component {
     EventManager.instance.off(EVENT_TYPE_ENUM.SHOW_SOMKE, this.generateSmokes)
   }
 
-  generateState() {
+  generateStage() {
     this.stage = createUINode('Stage')
     this.stage.setParent(this.node)
+    this.stage.addComponent(ShakeManager)
   }
 
   checkWin() {
@@ -58,6 +61,8 @@ export class BattleManager extends Component {
   async initLevel() {
     const level = Levels[`level${DataManager.instance.levelIndex}`]
     if (level) {
+      await FaderManger.Instance.fadeIn()
+
       this.clearLevel()
 
       this.level = level
@@ -76,6 +81,8 @@ export class BattleManager extends Component {
       ])
 
       await this.generatePlayer()
+
+      await FaderManger.Instance.fadeOut()
     }
   }
 
@@ -96,6 +103,7 @@ export class BattleManager extends Component {
     const { mapRowCount, mapColumnCount } = DataManager.instance
     const width = (mapRowCount * TILE_WIDTH) / 2
     const height = (mapColumnCount * TILE_WIDTH) / 2 + 80
+    this.getComponent(ShakeManager)?.stop()
     this.stage.setPosition(-width, height)
   }
 
@@ -192,7 +200,6 @@ export class BattleManager extends Component {
         state: FSM_PARAM_TYPE_ENUM.IDLE,
       })
       DataManager.instance.smokes.push(smokeManager)
-      console.log(DataManager.instance.smokes)
     }
   }
 }

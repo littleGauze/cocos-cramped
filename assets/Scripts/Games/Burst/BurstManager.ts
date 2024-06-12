@@ -6,6 +6,7 @@ import DataManager from '../../Runtimes/DataManager'
 import EnemyManager from '../../Base/EnemyManager'
 import BurstStateMachine from './BurstStateMachine'
 import { TILE_HEIGHT, TILE_WIDTH } from '../Tile/TileManager'
+import { SHAKE_DIRECTION } from '../../UI/ShakeManger'
 
 const { ccclass } = _decorator
 

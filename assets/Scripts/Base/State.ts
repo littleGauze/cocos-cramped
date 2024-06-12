@@ -13,6 +13,7 @@ export default class State {
     private path: string,
     private mode: AnimationClip.WrapMode = AnimationClip.WrapMode.Normal,
     private speed: number = ANIMATION_SPEED,
+    private events: AnimationClip.IEvent[] = [],
   ) {
     this.init()
   }
@@ -34,6 +35,10 @@ export default class State {
     this.animationClip.addTrack(track)
     this.animationClip.name = this.path
     this.animationClip.duration = this.speed * frames.length
+
+    if (this.events.length > 0) {
+      this.animationClip.events = this.events
+    }
   }
 
   run() {

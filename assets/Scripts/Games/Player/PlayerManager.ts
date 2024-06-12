@@ -7,6 +7,7 @@ import PlayerStateMachine from './PlayerStateMachine'
 import DataManager from '../../Runtimes/DataManager'
 import EnemyManager from '../../Base/EnemyManager'
 import BurstManager from '../Burst/BurstManager'
+import { SHAKE_DIRECTION } from '../../UI/ShakeManger'
 
 const { ccclass } = _decorator
 
@@ -46,6 +47,10 @@ export default class PlayerManager extends EntityManager {
 
   onPlayerAirDeath() {
     this.state = FSM_PARAM_TYPE_ENUM.AIRDEATH
+  }
+
+  onAttackShake(type: SHAKE_DIRECTION) {
+    EventManager.instance.emit(EVENT_TYPE_ENUM.SHAKE, type)
   }
 
   update(dt: number) {
@@ -92,6 +97,44 @@ export default class PlayerManager extends EntityManager {
     }
 
     if (this.willBlock(type)) {
+      switch (type) {
+        case PLAYER_ACTION_ENUM.MOVE_LEFT:
+          EventManager.instance.emit(EVENT_TYPE_ENUM.SHAKE, SHAKE_DIRECTION.LEFT)
+          break
+        case PLAYER_ACTION_ENUM.MOVE_RIGHT:
+          EventManager.instance.emit(EVENT_TYPE_ENUM.SHAKE, SHAKE_DIRECTION.RIGHT)
+          break
+        case PLAYER_ACTION_ENUM.MOVE_UP:
+          EventManager.instance.emit(EVENT_TYPE_ENUM.SHAKE, SHAKE_DIRECTION.UP)
+          break
+        case PLAYER_ACTION_ENUM.MOVE_DOWN:
+          EventManager.instance.emit(EVENT_TYPE_ENUM.SHAKE, SHAKE_DIRECTION.DOWN)
+          break
+        case PLAYER_ACTION_ENUM.TURN_LEFT:
+          if (this.direction === DIRECTION_ENUM.UP) {
+            EventManager.instance.emit(EVENT_TYPE_ENUM.SHAKE, SHAKE_DIRECTION.LEFT)
+          } else if (this.direction === DIRECTION_ENUM.LEFT) {
+            EventManager.instance.emit(EVENT_TYPE_ENUM.SHAKE, SHAKE_DIRECTION.DOWN)
+          } else if (this.direction === DIRECTION_ENUM.DOWN) {
+            EventManager.instance.emit(EVENT_TYPE_ENUM.SHAKE, SHAKE_DIRECTION.RIGHT)
+          } else if (this.direction === DIRECTION_ENUM.RIGHT) {
+            EventManager.instance.emit(EVENT_TYPE_ENUM.SHAKE, SHAKE_DIRECTION.UP)
+          }
+          break
+        case PLAYER_ACTION_ENUM.TURN_RIGHT:
+          if (this.direction === DIRECTION_ENUM.UP) {
+            EventManager.instance.emit(EVENT_TYPE_ENUM.SHAKE, SHAKE_DIRECTION.RIGHT)
+          } else if (this.direction === DIRECTION_ENUM.LEFT) {
+            EventManager.instance.emit(EVENT_TYPE_ENUM.SHAKE, SHAKE_DIRECTION.UP)
+          } else if (this.direction === DIRECTION_ENUM.DOWN) {
+            EventManager.instance.emit(EVENT_TYPE_ENUM.SHAKE, SHAKE_DIRECTION.LEFT)
+          } else if (this.direction === DIRECTION_ENUM.RIGHT) {
+            EventManager.instance.emit(EVENT_TYPE_ENUM.SHAKE, SHAKE_DIRECTION.DOWN)
+          }
+          break
+        default:
+          break
+      }
       return
     }
     this.move(type)
