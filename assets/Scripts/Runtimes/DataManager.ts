@@ -6,7 +6,9 @@ import PlayerManager from '../Games/Player/PlayerManager'
 import SmokeManager from '../Games/Smokes/SmokeManager'
 import SpikesManager from '../Games/Spikes/SpikesManager'
 import { TileManager } from '../Games/Tile/TileManager'
-import { MapInfo } from '../Levels'
+import { ILevel, MapInfo } from '../Levels'
+
+export type IRecord = Omit<ILevel, 'mapInfo'>
 
 export default class DataManager extends Singleton {
   static get instance() {
@@ -27,6 +29,7 @@ export default class DataManager extends Singleton {
   bursts: BurstManager[] = []
   spikes: SpikesManager[] = []
   smokes: SmokeManager[] = []
+  records: IRecord[] = []
 
   reset() {
     this.mapInfo = []

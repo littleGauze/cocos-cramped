@@ -92,7 +92,11 @@ export default class PlayerManager extends EntityManager {
 
     let id = ''
     if ((id = this.willAttack(type))) {
+      EventManager.instance.emit(EVENT_TYPE_ENUM.RECORD_STEP)
+      this.state = FSM_PARAM_TYPE_ENUM.ATTACK
       EventManager.instance.emit(EVENT_TYPE_ENUM.PLAYER_ATTACK, id)
+      EventManager.instance.emit(EVENT_TYPE_ENUM.PLAYER_MOVE_END)
+      EventManager.instance.emit(EVENT_TYPE_ENUM.CHECK_DOOR_OPEN)
       return
     }
 
@@ -141,6 +145,7 @@ export default class PlayerManager extends EntityManager {
   }
 
   move(type: PLAYER_ACTION_ENUM) {
+    EventManager.instance.emit(EVENT_TYPE_ENUM.RECORD_STEP)
     switch (type) {
       case PLAYER_ACTION_ENUM.MOVE_LEFT:
         this.targetX -= 1
@@ -207,7 +212,6 @@ export default class PlayerManager extends EntityManager {
         this.targetX === enemy.x &&
         enemy.y === this.targetY - 2
       ) {
-        this.state = FSM_PARAM_TYPE_ENUM.ATTACK
         return enemy.id
       } else if (
         type === PLAYER_ACTION_ENUM.MOVE_LEFT &&
@@ -215,7 +219,6 @@ export default class PlayerManager extends EntityManager {
         this.targetX - 2 === enemy.x &&
         enemy.y === this.targetY
       ) {
-        this.state = FSM_PARAM_TYPE_ENUM.ATTACK
         return enemy.id
       } else if (
         type === PLAYER_ACTION_ENUM.MOVE_DOWN &&
@@ -223,7 +226,6 @@ export default class PlayerManager extends EntityManager {
         this.targetX === enemy.x &&
         enemy.y === this.targetY + 2
       ) {
-        this.state = FSM_PARAM_TYPE_ENUM.ATTACK
         return enemy.id
       } else if (
         type === PLAYER_ACTION_ENUM.MOVE_RIGHT &&
@@ -231,7 +233,6 @@ export default class PlayerManager extends EntityManager {
         this.targetX + 2 === enemy.x &&
         enemy.y === this.targetY
       ) {
-        this.state = FSM_PARAM_TYPE_ENUM.ATTACK
         return enemy.id
       }
     }
