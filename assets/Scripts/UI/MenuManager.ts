@@ -6,7 +6,13 @@ const { ccclass } = _decorator
 
 @ccclass('MenuManager')
 export default class MenuManager extends Component {
-  handle(event: Event) {
+  handleUndo(event: Event) {
     EventManager.instance.emit(EVENT_TYPE_ENUM.RECORD_REVOKE)
+  }
+  handleRestart(event: Event) {
+    EventManager.instance.emit(EVENT_TYPE_ENUM.RESTART)
+  }
+  handleOut(event: Event) {
+    EventManager.instance.emit(EVENT_TYPE_ENUM.GAME_OVER)
   }
 }

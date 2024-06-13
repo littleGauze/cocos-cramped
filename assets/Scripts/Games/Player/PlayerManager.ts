@@ -95,7 +95,6 @@ export default class PlayerManager extends EntityManager {
       EventManager.instance.emit(EVENT_TYPE_ENUM.RECORD_STEP)
       this.state = FSM_PARAM_TYPE_ENUM.ATTACK
       EventManager.instance.emit(EVENT_TYPE_ENUM.PLAYER_ATTACK, id)
-      EventManager.instance.emit(EVENT_TYPE_ENUM.PLAYER_MOVE_END)
       EventManager.instance.emit(EVENT_TYPE_ENUM.CHECK_DOOR_OPEN)
       return
     }

@@ -47,6 +47,7 @@ export default class EntityManager extends Component {
     this.y = params.y
     this.state = params.state
     this.direction = params.direction
+    this.type = params.type
   }
 
   update(dt: number) {

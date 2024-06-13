@@ -253,8 +253,8 @@ export class BattleManager extends Component {
     const item = DataManager.instance.records.pop()
 
     if (item) {
-      DataManager.instance.player.x = item.player.x
-      DataManager.instance.player.y = item.player.y
+      DataManager.instance.player.x = DataManager.instance.player.targetX = item.player.x
+      DataManager.instance.player.y = DataManager.instance.player.targetY = item.player.y
       DataManager.instance.player.direction = item.player.direction
       DataManager.instance.player.state =
         DataManager.instance.player.state === FSM_PARAM_TYPE_ENUM.IDLE ||
